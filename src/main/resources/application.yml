@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: sb-availability
+  cache:
+    type: redis
+    cache-names: availability
+    redis:
+      key-prefix: sb
+      time-to-live: 1h
+  redis:
+    url: ${REDIS_PROTOCOL:redis}://${REDIS_CREDENTIALS:}${REDIS_HOST:localhost:6379}
+  data:
+    mongodb:
+      uri: ${MONGO_PROTOCOL:mongodb}://${MONGO_CREDENTIALS:}${MONGO_HOST:localhost:27017}/${spring.application.name}
+management:
+  server:
+    port: ${MANAGEMENT_PORT:8180}
