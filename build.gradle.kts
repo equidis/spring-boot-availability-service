@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val commonsVersion: String by project
+val usersServiceVersion: String by project
 val springCloudVersion: String by project
 
 plugins {
@@ -22,6 +23,7 @@ repositories {
     mavenCentral()
     jcenter()
     mavenGithub("equidis/sb-commons")
+    mavenGithub("equidis/spring-boot-users-service")
     maven { url = uri("https://repo.spring.io/milestone") }
 }
 
@@ -36,6 +38,7 @@ dependencies {
     testImplementation("com.github.jntakpe:sb-commons-cache-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-mongo-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-test:$commonsVersion")
+    testImplementation("com.github.jntakpe:sb-users:$usersServiceVersion:stubs")
 }
 
 dependencyManagement {
