@@ -12,6 +12,13 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_PROTOCOL:mongodb}://${MONGO_CREDENTIALS:}${MONGO_HOST:localhost:27017}/${spring.application.name}
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            sb-users:
+              - uri: http://sb-users:8080
 management:
   server:
     port: ${MANAGEMENT_PORT:8180}
