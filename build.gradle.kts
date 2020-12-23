@@ -36,6 +36,7 @@ dependencies {
     implementation("com.github.jntakpe:sb-commons-mongo:$commonsVersion")
     implementation("com.github.jntakpe:sb-commons-web:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-cache-test:$commonsVersion")
+    testImplementation("com.github.jntakpe:sb-commons-client-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-mongo-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-users:$usersServiceVersion:stubs")
