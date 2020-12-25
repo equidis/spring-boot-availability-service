@@ -3,6 +3,7 @@ package com.github.jntakpe.sbavailability.service
 import com.github.jntakpe.commons.cache.RedisReactiveCache
 import com.github.jntakpe.commons.context.CommonException
 import com.github.jntakpe.commons.context.logger
+import com.github.jntakpe.commons.mongo.insertError
 import com.github.jntakpe.sbavailability.client.UserClient
 import com.github.jntakpe.sbavailability.model.entity.UserAvailability
 import com.github.jntakpe.sbavailability.repository.UserAvailabilityRepository
@@ -45,6 +46,30 @@ class UserAvailabilityService(
             .doOnSubscribe { log.debug("Searching user availability identifier using it's username {}", username) }
             .doOnNext { log.debug("User {} retrieved using it's username", it.username) }
             .flatMapMany { findByUserId(it.id) }
+    }
+
+    fun declareAvailability(userAvailability: UserAvailability): Mono<UserAvailability> {
+        return verifyUserIdExists(userAvailability.userId)
+            .then(declareVerifiedUserAvailability(userAvailability))
+    }
+
+    private fun declareVerifiedUserAvailability(userAvailability: UserAvailability): Mono<UserAvailability> {
+        return repository.insert(userAvailability)
+            .doOnSubscribe { log.debug("Creating {}", userAvailability) }
+            .doOnNext { log.info("{} created", it) }
+            .onErrorMap { it.insertError(userAvailability, log) }
+            .doOnNext {
+                usersAvailabilityCache.putAndForget(userAvailability.id, userAvailability)
+                usersAvailabilityCache.putAndForget(userAvailability.userId, userAvailability)
+            }
+    }
+
+    private fun verifyUserIdExists(id: String): Mono<Void> {
+        return client.findById(id)
+            .doOnSubscribe { log.debug("Checking user id {} is valid", id) }
+            .doOnNext { log.debug("User id {} is valid", id) }
+            .onErrorMap { CommonException("User id $id does not exists", log::debug, HttpStatus.BAD_REQUEST, it) }
+            .then()
     }
 
     private fun Throwable.isNotFoundError() = (this as? CommonException)?.status == HttpStatus.NOT_FOUND

@@ -17,6 +17,7 @@ import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -157,5 +158,49 @@ internal class UserAvailabilityServiceTest(
         service.findByUsername("unknown").test()
             .expectNextCount(0)
             .verifyComplete()
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(UserAvailabilityDao.TransientData::class)
+    fun `declare availability should return created document`(userAvailability: UserAvailability) {
+        val client = mockk<UserClient>()
+        every { client.findById(userAvailability.userId) } returns UserClientDto(MDOE_USERNAME, userAvailability.userId).toMono()
+        UserAvailabilityService(repository, client, cacheManager).declareAvailability(userAvailability).test()
+            .consumeNextWith { assertThat(it).usingRecursiveComparison().ignoringFields("id").isEqualTo(userAvailability) }
+            .verifyComplete()
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(UserAvailabilityDao.TransientData::class)
+    fun `declare availability should put item in cache`(userAvailability: UserAvailability) {
+        val retrieveWithId = { rawCache.get(userAvailability.id, UserAvailability::class.java) }
+        val retrieveWithUserId = { rawCache.get(userAvailability.userId, UserAvailability::class.java) }
+        assertThat(retrieveWithId()).isNull()
+        assertThat(retrieveWithId()).isNull()
+        val client = mockk<UserClient>()
+        every { client.findById(userAvailability.userId) } returns UserClientDto(MDOE_USERNAME, userAvailability.userId).toMono()
+        UserAvailabilityService(repository, client, cacheManager).declareAvailability(userAvailability).test()
+            .expectNext(userAvailability)
+            .then {
+                assertThat(retrieveWithId()).isNotNull.isEqualTo(userAvailability)
+                assertThat(retrieveWithUserId()).isNotNull.isEqualTo(userAvailability)
+            }
+            .verifyComplete()
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(UserAvailabilityDao.PersistedData::class)
+    fun `declare availability should fail with already exists code when integrity constraint violated`(userAvailability: UserAvailability) {
+        service.declareAvailability(UserAvailabilityDao.TransientData.mdoeRemote.copy(userId = userAvailability.userId)).test()
+            .expectCommonException(HttpStatus.CONFLICT)
+            .verify()
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(UserAvailabilityDao.TransientData::class)
+    fun `declare availability should fail when user id does not exists`(userAvailability: UserAvailability) {
+        service.declareAvailability(userAvailability.copy(userId = ObjectId().toString())).test()
+            .expectCommonException(HttpStatus.BAD_REQUEST)
+            .verify()
     }
 }
