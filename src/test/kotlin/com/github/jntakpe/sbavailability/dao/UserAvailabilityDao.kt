@@ -17,7 +17,8 @@ class UserAvailabilityDao(@Autowired repository: UserAvailabilityRepository) : M
 
         val JDOE_ID = "5fdb5cdad07bba25f645cd87"
         val JDOE_USERNAME = "jdoe"
-        val jdoeOnsite = UserAvailability(JDOE_ID, LocalDate.of(2020, 10, 15), WorkArrangementType.ONSITE, ObjectId())
+        val ONSITE_ID = "5fe8a239b76c4a3c325ba4e5"
+        val jdoeOnsite = UserAvailability(JDOE_ID, LocalDate.of(2020, 10, 15), WorkArrangementType.ONSITE, ObjectId(ONSITE_ID))
         val jdoeRemote = UserAvailability(JDOE_ID, LocalDate.of(2020, 10, 16), WorkArrangementType.REMOTE, ObjectId())
         val jdoeOff = UserAvailability(JDOE_ID, LocalDate.of(2020, 10, 19), WorkArrangementType.OFF, ObjectId())
 
