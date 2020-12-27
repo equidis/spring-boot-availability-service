@@ -26,7 +26,7 @@ class UserAvailabilityDao(@Autowired repository: UserAvailabilityRepository) : M
 
     object TransientData : TestDataProvider<UserAvailability> {
 
-        val MDOE_ID = ObjectId().toString()
+        val MDOE_ID = "5fe773204edcff0fbfbf45e4"
         val MDOE_USERNAME = "mdoe"
         val mdoeOnsite = UserAvailability(MDOE_ID, LocalDate.of(2020, 10, 15), WorkArrangementType.ONSITE, ObjectId())
         val mdoeRemote = UserAvailability(MDOE_ID, LocalDate.of(2020, 10, 16), WorkArrangementType.REMOTE, ObjectId())
