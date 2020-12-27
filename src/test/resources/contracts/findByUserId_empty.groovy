@@ -17,6 +17,7 @@ Contract.make {
         }
         bodyMatchers {
             jsonPath('$', byType {
+                minOccurrence(0)
                 maxOccurrence(0)
             })
         }
