@@ -2,13 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val commonsVersion: String by project
 val usersServiceVersion: String by project
-val springCloudVersion: String by project
 
 plugins {
     idea
     jacoco
     id("org.springframework.boot") version "2.4.0"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("com.google.cloud.tools.jib") version "2.7.0"
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -27,8 +25,6 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 }
 
-extra["springCloudVersion"] = springCloudVersion
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
@@ -40,12 +36,6 @@ dependencies {
     testImplementation("com.github.jntakpe:sb-commons-mongo-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-commons-test:$commonsVersion")
     testImplementation("com.github.jntakpe:sb-users:$usersServiceVersion:stubs")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
 }
 
 tasks.withType<KotlinCompile> {
