@@ -8,8 +8,8 @@ import com.github.jntakpe.sbavailability.repository.UserAvailabilityRepository
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.PersistedData.JDOE_ID
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.PersistedData.JDOE_USERNAME
-import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MDOE_ID
-import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MDOE_USERNAME
+import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MMOE_ID
+import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MMOE_USERNAME
 import io.mockk.Called
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -130,7 +130,7 @@ internal class UserAvailabilityServiceTest(
 
     @Test
     fun `find by user id return empty when user id does not exists`() {
-        service.findByUserId(MDOE_ID).test()
+        service.findByUserId(MMOE_ID).test()
             .expectNextCount(0)
             .verifyComplete()
     }
@@ -147,8 +147,8 @@ internal class UserAvailabilityServiceTest(
     @Test
     fun `find by username return empty when username does not exists in database`() {
         val client = mockk<UserClient>()
-        every { client.findByUsername(MDOE_USERNAME) } returns UserClientDto(MDOE_USERNAME, MDOE_ID).toMono()
-        UserAvailabilityService(repository, client, cacheManager).findByUsername(MDOE_USERNAME).test()
+        every { client.findByUsername(MMOE_USERNAME) } returns UserClientDto(MMOE_USERNAME, MMOE_ID).toMono()
+        UserAvailabilityService(repository, client, cacheManager).findByUsername(MMOE_USERNAME).test()
             .expectNextCount(0)
             .verifyComplete()
     }
@@ -164,7 +164,7 @@ internal class UserAvailabilityServiceTest(
     @ArgumentsSource(UserAvailabilityDao.TransientData::class)
     fun `declare availability should return created document`(userAvailability: UserAvailability) {
         val client = mockk<UserClient>()
-        every { client.findById(userAvailability.userId) } returns UserClientDto(MDOE_USERNAME, userAvailability.userId).toMono()
+        every { client.findById(userAvailability.userId) } returns UserClientDto(MMOE_USERNAME, userAvailability.userId).toMono()
         UserAvailabilityService(repository, client, cacheManager).declareAvailability(userAvailability).test()
             .consumeNextWith { assertThat(it).usingRecursiveComparison().ignoringFields("id").isEqualTo(userAvailability) }
             .verifyComplete()
@@ -178,7 +178,7 @@ internal class UserAvailabilityServiceTest(
         assertThat(retrieveWithId()).isNull()
         assertThat(retrieveWithId()).isNull()
         val client = mockk<UserClient>()
-        every { client.findById(userAvailability.userId) } returns UserClientDto(MDOE_USERNAME, userAvailability.userId).toMono()
+        every { client.findById(userAvailability.userId) } returns UserClientDto(MMOE_USERNAME, userAvailability.userId).toMono()
         UserAvailabilityService(repository, client, cacheManager).declareAvailability(userAvailability).test()
             .expectNext(userAvailability)
             .then {
@@ -191,7 +191,7 @@ internal class UserAvailabilityServiceTest(
     @ParameterizedTest
     @ArgumentsSource(UserAvailabilityDao.PersistedData::class)
     fun `declare availability should fail with already exists code when integrity constraint violated`(userAvailability: UserAvailability) {
-        service.declareAvailability(UserAvailabilityDao.TransientData.mdoeRemote.copy(userId = userAvailability.userId)).test()
+        service.declareAvailability(UserAvailabilityDao.TransientData.mmoeRemote.copy(userId = userAvailability.userId)).test()
             .expectCommonException(HttpStatus.CONFLICT)
             .verify()
     }

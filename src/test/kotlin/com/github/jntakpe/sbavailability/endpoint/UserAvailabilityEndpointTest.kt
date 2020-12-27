@@ -8,7 +8,7 @@ import com.github.jntakpe.sbavailability.model.entity.WorkArrangementType
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.PersistedData.JDOE_ID
 import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.PersistedData.JDOE_USERNAME
-import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MDOE_ID
+import com.github.jntakpe.sbusers.dao.UserAvailabilityDao.TransientData.MMOE_ID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -72,7 +72,7 @@ internal class UserAvailabilityEndpointTest(
     @Test
     fun `find by user should return empty when user id does not exist`() {
         client.get()
-            .uri { it.path(availabilitiesPath).queryParam("userId", MDOE_ID).build() }
+            .uri { it.path(availabilitiesPath).queryParam("userId", MMOE_ID).build() }
             .exchange()
             .expectBody<List<UserAvailabilityApiDto>>()
             .consumeWith { assertThat(it.responseBody!!).isEmpty() }

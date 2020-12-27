@@ -27,12 +27,12 @@ class UserAvailabilityDao(@Autowired repository: UserAvailabilityRepository) : M
 
     object TransientData : TestDataProvider<UserAvailability> {
 
-        val MDOE_ID = "5fe773204edcff0fbfbf45e4"
-        val MDOE_USERNAME = "mdoe"
-        val mdoeOnsite = UserAvailability(MDOE_ID, LocalDate.of(2020, 10, 15), WorkArrangementType.ONSITE, ObjectId())
-        val mdoeRemote = UserAvailability(MDOE_ID, LocalDate.of(2020, 10, 16), WorkArrangementType.REMOTE, ObjectId())
-        val mdoeOff = UserAvailability(MDOE_ID, LocalDate.of(2020, 10, 19), WorkArrangementType.OFF, ObjectId())
+        val MMOE_ID = "5fe773204edcff0fbfbf45e4"
+        val MMOE_USERNAME = "mmoe"
+        val mmoeOnsite = UserAvailability(MMOE_ID, LocalDate.of(2020, 10, 15), WorkArrangementType.ONSITE, ObjectId())
+        val mmoeRemote = UserAvailability(MMOE_ID, LocalDate.of(2020, 10, 16), WorkArrangementType.REMOTE, ObjectId())
+        val mmoeOff = UserAvailability(MMOE_ID, LocalDate.of(2020, 10, 19), WorkArrangementType.OFF, ObjectId())
 
-        override fun data() = listOf(mdoeOnsite, mdoeRemote, mdoeOff)
+        override fun data() = listOf(mmoeOnsite, mmoeRemote, mmoeOff)
     }
 }

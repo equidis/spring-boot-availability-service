@@ -5,7 +5,7 @@ Contract.make {
         method 'GET'
         urlPath("/availabilities") {
             queryParameters {
-                parameter 'username': 'mdoe'
+                parameter 'username': 'mmoe'
             }
         }
     }
