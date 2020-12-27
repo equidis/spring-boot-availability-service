@@ -5,6 +5,7 @@ val usersServiceVersion: String by project
 
 plugins {
     idea
+    `maven-publish`
     jacoco
     id("org.springframework.boot") version "2.4.0"
     id("com.google.cloud.tools.jib") version "2.7.0"
@@ -22,7 +23,6 @@ repositories {
     jcenter()
     mavenGithub("equidis/sb-commons")
     mavenGithub("equidis/spring-boot-users-service")
-    maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 dependencies {
@@ -69,6 +69,12 @@ tasks {
     }
     check {
         dependsOn(jacocoTestReport)
+    }
+}
+
+publishing {
+    repositories {
+        mavenGithub("equidis/spring-boot-availability-service")
     }
 }
 
