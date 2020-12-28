@@ -32,7 +32,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubActor: ${{ env.GITHUB_ACTOR }}
           ORG_GRADLE_PROJECT_githubToken: ${{ secrets.GITHUB_TOKEN }}
       - name: Run test suite
-        run: ./gradlew check --stacktrace --info
+        run: ./gradlew check
         env:
           ORG_GRADLE_PROJECT_githubActor: ${{ env.GITHUB_ACTOR }}
           ORG_GRADLE_PROJECT_githubToken: ${{ secrets.GITHUB_TOKEN }}
