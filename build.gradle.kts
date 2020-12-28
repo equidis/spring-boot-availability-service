@@ -20,7 +20,7 @@ plugins {
 }
 
 group = "com.github.jntakpe"
-version = "0.0.1-RC1"
+version = "0.0.1-RC2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
