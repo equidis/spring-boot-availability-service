@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sb-availability
+    name: availability
   cache:
     type: redis
     cache-names: availability
@@ -18,7 +18,7 @@ spring:
         simple:
           instances:
             sb-users:
-              - uri: http://${SB_USERS_SERVICE:sb-users:8080}
+              - uri: http://${SB_USERS_SERVICE:users:50051}
 management:
   server:
     port: ${MANAGEMENT_PORT:8180}
