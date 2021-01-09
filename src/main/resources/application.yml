@@ -26,6 +26,3 @@ management:
     health:
       probes:
         enabled: true
-  endpoints:
-    web:
-      base-path: /
