@@ -16,7 +16,7 @@ plugins {
     jacoco
     id("org.springframework.boot") version "2.4.4"
     id("org.springframework.cloud.contract") version "2.2.5.RELEASE"
-    id("com.google.cloud.tools.jib") version "2.8.0"
+    id("com.google.cloud.tools.jib") version "3.0.0"
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.spring") version "1.4.32"
 }
